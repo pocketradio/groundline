@@ -68,11 +68,11 @@ function Ask() {
 
   async function ask() {
     if (!question.trim()) return;
-    setBusy(true); setError(null);
+    setBusy(true); setError(null); setResult(null);
     try {
       setResult(await api<QueryResult>("/api/query", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question: question.trim() }),
       }));
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "query failed");
