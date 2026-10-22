@@ -6,7 +6,6 @@ import time
 from collections.abc import Awaitable, Callable
 from typing import Protocol, TypedDict
 
-import httpx
 from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, Field
 from sqlalchemy import text
@@ -16,6 +15,7 @@ from groundline.answering import (
     Claim,
     ClaimGenerator,
     ClaimVerifier,
+    JsonModelClient,
     VerificationResult,
     create_json_model_client,
     render_answer,
@@ -53,8 +53,9 @@ class Planner(Protocol):
 
 
 class OllamaPlanner:
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings, client: JsonModelClient | None = None):
         self.settings = settings
+        self.client = client or create_json_model_client(settings)
 
     async def plan(self, question: str) -> QueryPlan:
         prompt = (
@@ -64,19 +65,8 @@ class OllamaPlanner:
             f"and graph for dependencies or relationships. Question: {question}"
         )
         try:
-            async with httpx.AsyncClient(
-                base_url=self.settings.ollama_base_url, timeout=15
-            ) as client:
-                response = await client.post("/api/chat", json={
-                    "model": self.settings.chat_model,
-                    "stream": False,
-                    "format": "json",
-                    "think": False,
-                    "messages": [{"role": "user", "content": prompt}],
-                })
-                response.raise_for_status()
-                content = response.json()["message"]["content"]
-            plan = QueryPlan.model_validate_json(content)
+            payload = await self.client.complete(prompt)
+            plan = QueryPlan.model_validate(payload)
             required = self._fallback(question)
             return QueryPlan(
                 tools=list(dict.fromkeys([*required.tools, *plan.tools])),
