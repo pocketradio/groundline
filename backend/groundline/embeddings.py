@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import mimetypes
 
 import httpx
 from sqlalchemy import text
@@ -9,6 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from groundline.config import Settings
 from groundline.ingestion import NormalizedChunk, normalize_file
+
+
+def document_mime_type(filename: str) -> str:
+    return mimetypes.guess_type(filename)[0] or "application/octet-stream"
 
 
 async def embed_texts(settings: Settings, texts: list[str]) -> list[list[float]]:
@@ -45,14 +50,23 @@ async def ingest_file(
             ON CONFLICT (id) DO NOTHING
         """), {"id": source_id, "name": filename, "uri": filename})
         await connection.execute(text("""
+            SELECT id FROM sources WHERE id = CAST(:source_id AS uuid) FOR UPDATE
+        """), {"source_id": source_id})
+        next_revision = await connection.execute(text("""
+            SELECT COALESCE(MAX(revision_number), 0) + 1
+            FROM document_revisions
+            WHERE source_id = CAST(:source_id AS uuid)
+        """), {"source_id": source_id})
+        await connection.execute(text("""
             INSERT INTO document_revisions (id, source_id, content_hash, mime_type, revision_number)
-            VALUES (CAST(:id AS uuid), CAST(:source_id AS uuid), :hash, :mime, 1)
+            VALUES (CAST(:id AS uuid), CAST(:source_id AS uuid), :hash, :mime, :revision_number)
             ON CONFLICT (id) DO NOTHING
         """), {
             "id": revision_id,
             "source_id": source_id,
             "hash": revision_id,
-            "mime": "application/octet-stream",
+            "mime": document_mime_type(filename),
+            "revision_number": next_revision.scalar_one(),
         })
         for ordinal, (chunk, embedding) in enumerate(zip(chunks, embeddings, strict=True), start=1):
             await connection.execute(text("""
