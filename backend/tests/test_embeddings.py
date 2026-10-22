@@ -1,8 +1,8 @@
 import pytest
 
-from synapse.config import Settings
-from synapse.embeddings import embed_chunks
-from synapse.ingestion import NormalizedChunk
+from groundline.config import Settings
+from groundline.embeddings import embed_chunks
+from groundline.ingestion import NormalizedChunk
 
 
 class FakeResponse:
@@ -36,7 +36,7 @@ class FakeClient:
 @pytest.mark.asyncio
 async def test_embedding_batches_preserve_chunk_count(monkeypatch: pytest.MonkeyPatch) -> None:
     FakeClient.calls = []
-    monkeypatch.setattr("synapse.embeddings.httpx.AsyncClient", FakeClient)
+    monkeypatch.setattr("groundline.embeddings.httpx.AsyncClient", FakeClient)
     settings = Settings(embedding_batch_size=2)
     chunks = [NormalizedChunk(f"chunk {index}", {"line": index}) for index in range(5)]
     embeddings = await embed_chunks(settings, chunks)

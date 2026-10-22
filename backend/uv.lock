@@ -737,7 +737,7 @@ wheels = [
 ]
 
 [[package]]
-name = "synapse-backend"
+name = "groundline-backend"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

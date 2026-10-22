@@ -11,8 +11,8 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from synapse.config import get_settings
-from synapse.retrieval import (
+from groundline.config import get_settings
+from groundline.retrieval import (
     EvidenceCandidate,
     graph_search,
     lexical_search,
@@ -20,8 +20,8 @@ from synapse.retrieval import (
     retrieve,
     vector_search,
 )
-from synapse.routing import route_question
-from synapse.workflow import BoundedQueryWorkflow, OllamaPlanner
+from groundline.routing import route_question
+from groundline.workflow import BoundedQueryWorkflow, OllamaPlanner
 
 BENCHMARK_PATH = Path(__file__).parents[1] / "evaluation" / "benchmark.json"
 STRATEGIES = (
@@ -242,7 +242,7 @@ async def main(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the Synapse retrieval benchmark.")
+    parser = argparse.ArgumentParser(description="Run the Groundline retrieval benchmark.")
     parser.add_argument("--output", type=Path, help="also write the JSON report to this path")
     parser.add_argument("--answers-only", action="store_true")
     parser.add_argument("--limit", type=int, help="run only the first N benchmark questions")

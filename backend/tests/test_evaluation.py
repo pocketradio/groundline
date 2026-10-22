@@ -1,12 +1,12 @@
-from synapse.cache import RetrievalCache
-from synapse.evaluation import (
+from groundline.cache import RetrievalCache
+from groundline.evaluation import (
     BenchmarkCase,
     load_benchmark,
     score_answer,
     score_ranking,
     summarize_scores,
 )
-from synapse.routing import route_question
+from groundline.routing import route_question
 
 
 def test_benchmark_contains_twenty_cases() -> None:

@@ -1,7 +1,7 @@
 import pytest
 
-from synapse.cache import RetrievalCache
-from synapse.config import get_settings
+from groundline.cache import RetrievalCache
+from groundline.config import get_settings
 
 
 @pytest.mark.asyncio

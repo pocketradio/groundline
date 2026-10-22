@@ -8,12 +8,12 @@ from redis.asyncio import Redis
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from synapse.config import Settings
+from groundline.config import Settings
 
 
 class RetrievalCache:
-    index_name = "synapse:semantic_index"
-    semantic_prefix = "synapse:semantic:"
+    index_name = "groundline:semantic_index"
+    semantic_prefix = "groundline:semantic:"
 
     def __init__(self, settings: Settings):
         self.settings = settings
@@ -38,7 +38,7 @@ class RetrievalCache:
         return hashlib.sha256(self.normalize(question).encode()).hexdigest()
 
     def _base(self, version: str, strategy: str, question: str) -> str:
-        return f"synapse:{version}:{strategy}:{self._question_hash(question)}"
+        return f"groundline:{version}:{strategy}:{self._question_hash(question)}"
 
     async def get_exact_retrieval(self, version: str, strategy: str, question: str) -> dict | None:
         try:
@@ -62,7 +62,7 @@ class RetrievalCache:
     async def get_embedding(self, version: str, question: str) -> list[float] | None:
         try:
             value = await self.redis.get(
-                f"synapse:embedding:{version}:{self.settings.embedding_model}:{self._question_hash(question)}"
+                f"groundline:embedding:{version}:{self.settings.embedding_model}:{self._question_hash(question)}"
             )
             return json.loads(value) if value else None
         except Exception:
@@ -71,7 +71,7 @@ class RetrievalCache:
     async def set_embedding(self, version: str, question: str, embedding: list[float]) -> None:
         try:
             await self.redis.setex(
-                f"synapse:embedding:{version}:{self.settings.embedding_model}:{self._question_hash(question)}",
+                f"groundline:embedding:{version}:{self.settings.embedding_model}:{self._question_hash(question)}",
                 self.settings.cache_ttl_seconds,
                 json.dumps(embedding),
             )

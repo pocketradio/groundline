@@ -6,12 +6,12 @@ from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from synapse.cache import RetrievalCache
-from synapse.config import get_settings
-from synapse.embeddings import ingest_file
-from synapse.health import check_database, check_ollama, overall_status
-from synapse.retrieval import retrieve
-from synapse.workflow import BoundedQueryWorkflow
+from groundline.cache import RetrievalCache
+from groundline.config import get_settings
+from groundline.embeddings import ingest_file
+from groundline.health import check_database, check_ollama, overall_status
+from groundline.retrieval import retrieve
+from groundline.workflow import BoundedQueryWorkflow
 
 settings = get_settings()
 engine = create_async_engine(settings.database_url, pool_pre_ping=True)
@@ -19,7 +19,7 @@ query_workflow = BoundedQueryWorkflow(engine, settings)
 retrieval_cache = RetrievalCache(settings)
 
 app = FastAPI(
-    title="Synapse API",
+    title="Groundline API",
     description="System boundary and dependency health API",
     version="0.1.0",
 )

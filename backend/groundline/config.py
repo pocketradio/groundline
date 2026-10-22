@@ -5,9 +5,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "Synapse"
+    app_name: str = "Groundline"
     environment: str = "development"
-    database_url: str = "postgresql+asyncpg://synapse:synapse@localhost:5432/synapse"
+    database_url: str = "postgresql+asyncpg://groundline:groundline@localhost:5432/groundline"
     ollama_base_url: str = "http://localhost:11434"
     chat_model: str = "qwen3.5:9b"
     chat_provider: str = "ollama"

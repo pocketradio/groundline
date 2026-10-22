@@ -6,7 +6,7 @@ from typing import Literal, Protocol
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from synapse.config import Settings
+from groundline.config import Settings
 
 VerificationStatus = Literal["supported", "partial", "unsupported", "conflicting"]
 

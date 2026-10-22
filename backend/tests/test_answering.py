@@ -1,4 +1,4 @@
-from synapse.answering import (
+from groundline.answering import (
     Claim,
     VerificationResult,
     parse_claims,

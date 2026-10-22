@@ -29,7 +29,7 @@ function App() {
   useEffect(() => { void loadHealth(); }, []);
   const status = health?.status ?? (error ? "unhealthy" : "loading");
   return <main>
-    <header><h1>synapse</h1><span className={`status ${status}`}>{status}</span></header>
+    <header><h1>groundline</h1><span className={`status ${status}`}>{status}</span></header>
     <nav aria-label="main navigation">{tabs.map((name) => <button className={tab === name ? "active" : ""} onClick={() => setTab(name)} key={name}>{name}</button>)}</nav>
     {error && <p className="error">{error}. start the backend on port 8000.</p>}
     {tab === "sources" && <Sources />}{tab === "knowledge" && <Knowledge />}{tab === "ask" && <Ask />}{tab === "evaluation" && <Evaluation />}
@@ -57,7 +57,7 @@ function Knowledge() {
 function LegacyAsk() {
   const [question, setQuestion] = useState(""); const [result, setResult] = useState<QueryResult | null>(null); const [error, setError] = useState<string | null>(null); const [busy, setBusy] = useState(false); const [duration, setDuration] = useState<number | null>(null);
   async function ask() { if (!question.trim()) return; setBusy(true); setError(null); const started = performance.now(); try { setResult(await api<QueryResult>("/api/query", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question }) })); setDuration(Math.round(performance.now() - started)); } catch (caught) { setError(caught instanceof Error ? caught.message : "query failed"); } finally { setBusy(false); } }
-  return <Panel label="ask" title="ask synapse"><textarea value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="ask a question about the corpus" rows={4} /><button onClick={() => void ask()} disabled={busy || !question.trim()}>{busy ? "running" : "ask"}</button>{error && <p className="error">{error}</p>}{result && <div className="answer"><h3>answer</h3><p className="answer-text">{result.answer}</p><h3>verification</h3>{result.verification.map((item, index) => <div className="claim" key={index}><span>{item.status}</span><p>{item.claim_text}</p><small>evidence: {item.evidence_ids.join(", ") || "none"}</small></div>)}<h3>execution</h3><p className="muted">route: {result.route ?? result.plan.kind ?? "?"} · tools: {result.plan.tools.join(", ")} · cache: {result.cache_level ?? "none"}</p><p className="muted">candidates: {result.candidates.length} · verified: {result.verification.length} · model calls: {result.model_calls ?? "?"} · latency: {result.latency_ms ?? duration ?? "?"}ms</p><p className="muted">nodes: {result.events.map((event) => event.node).join(" → ")}</p></div>}</Panel>;
+  return <Panel label="ask" title="ask groundline"><textarea value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="ask a question about the corpus" rows={4} /><button onClick={() => void ask()} disabled={busy || !question.trim()}>{busy ? "running" : "ask"}</button>{error && <p className="error">{error}</p>}{result && <div className="answer"><h3>answer</h3><p className="answer-text">{result.answer}</p><h3>verification</h3>{result.verification.map((item, index) => <div className="claim" key={index}><span>{item.status}</span><p>{item.claim_text}</p><small>evidence: {item.evidence_ids.join(", ") || "none"}</small></div>)}<h3>execution</h3><p className="muted">route: {result.route ?? result.plan.kind ?? "?"} · tools: {result.plan.tools.join(", ")} · cache: {result.cache_level ?? "none"}</p><p className="muted">candidates: {result.candidates.length} · verified: {result.verification.length} · model calls: {result.model_calls ?? "?"} · latency: {result.latency_ms ?? duration ?? "?"}ms</p><p className="muted">nodes: {result.events.map((event) => event.node).join(" → ")}</p></div>}</Panel>;
 }
 
 function Ask() {
@@ -79,7 +79,7 @@ function Ask() {
     } finally { setBusy(false); }
   }
 
-  return <Panel label="ask" title="ask synapse">
+  return <Panel label="ask" title="ask groundline">
     <textarea value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="ask a question about the corpus" rows={4} />
     <button onClick={() => void ask()} disabled={busy || !question.trim()}>{busy ? "running" : "ask"}</button>
     {error && <p className="error">{error}</p>}

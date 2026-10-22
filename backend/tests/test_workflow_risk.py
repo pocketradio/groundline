@@ -1,5 +1,5 @@
-from synapse.answering import VerificationResult
-from synapse.workflow import QueryPlan, calculate_risk_score
+from groundline.answering import VerificationResult
+from groundline.workflow import QueryPlan, calculate_risk_score
 
 
 def test_strong_evidence_has_no_risk() -> None:

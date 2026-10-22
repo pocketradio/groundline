@@ -4,7 +4,7 @@ import httpx
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from synapse.config import Settings
+from groundline.config import Settings
 
 
 async def check_database(engine: AsyncEngine) -> dict[str, Any]:

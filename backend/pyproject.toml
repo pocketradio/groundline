@@ -1,7 +1,7 @@
 [project]
-name = "synapse-backend"
+name = "groundline-backend"
 version = "0.1.0"
-description = "Local API for the Synapse knowledge engineering platform"
+description = "Local API for the Groundline knowledge engineering platform"
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "asyncpg>=0.30,<1",

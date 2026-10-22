@@ -5,7 +5,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from synapse.workflow_types import ToolName
+from groundline.workflow_types import ToolName
 
 RouteKind = Literal["exact", "semantic", "relationship", "hybrid"]
 

@@ -2,16 +2,16 @@ services:
   postgres:
     image: pgvector/pgvector:pg17
     environment:
-      POSTGRES_DB: synapse
-      POSTGRES_USER: synapse
-      POSTGRES_PASSWORD: synapse
+      POSTGRES_DB: groundline
+      POSTGRES_USER: groundline
+      POSTGRES_PASSWORD: groundline
     ports:
       - "55432:5432"
     volumes:
-      - synapse-postgres:/var/lib/postgresql/data
+      - groundline-postgres:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U synapse -d synapse"]
+      test: ["CMD-SHELL", "pg_isready -U groundline -d groundline"]
       interval: 3s
       timeout: 3s
       retries: 20
@@ -27,4 +27,4 @@ services:
       retries: 20
 
 volumes:
-  synapse-postgres:
+  groundline-postgres:

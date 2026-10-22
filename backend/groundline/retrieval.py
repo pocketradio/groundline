@@ -8,9 +8,9 @@ from dataclasses import dataclass
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from synapse.cache import RetrievalCache
-from synapse.config import Settings
-from synapse.embeddings import embed_texts
+from groundline.cache import RetrievalCache
+from groundline.config import Settings
+from groundline.embeddings import embed_texts
 
 
 @dataclass

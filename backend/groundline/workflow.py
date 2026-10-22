@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from synapse.answering import (
+from groundline.answering import (
     Claim,
     ClaimGenerator,
     ClaimVerifier,
@@ -22,9 +22,9 @@ from synapse.answering import (
     validate_citations,
     validate_claims,
 )
-from synapse.cache import RetrievalCache
-from synapse.config import Settings
-from synapse.retrieval import (
+from groundline.cache import RetrievalCache
+from groundline.config import Settings
+from groundline.retrieval import (
     EvidenceCandidate,
     graph_search,
     lexical_search,
@@ -32,8 +32,8 @@ from synapse.retrieval import (
     retrieve,
     vector_search,
 )
-from synapse.routing import route_question
-from synapse.workflow_types import ToolName
+from groundline.routing import route_question
+from groundline.workflow_types import ToolName
 
 logger = logging.getLogger(__name__)
 

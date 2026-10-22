@@ -1,4 +1,4 @@
-from synapse.health import overall_status
+from groundline.health import overall_status
 
 
 def service(status: str) -> dict[str, str]:

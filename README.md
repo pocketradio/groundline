@@ -1,6 +1,6 @@
-# synapse
+# groundline
 
-synapse is a provenance-first agentic rag system for evidence-grounded answers from technical sources.
+groundline is a provenance-first agentic rag system for evidence-grounded answers from technical sources.
 
 it combines lexical, vector, and graph retrieval with citations, validation, caching, and bounded verification for reliable answers from technical knowledge.
 

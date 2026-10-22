@@ -1,4 +1,4 @@
-from synapse.config import Settings
+from groundline.config import Settings
 
 
 def test_defaults_describe_local_stack() -> None:

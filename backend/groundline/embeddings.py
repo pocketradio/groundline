@@ -7,8 +7,8 @@ import httpx
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from synapse.config import Settings
-from synapse.ingestion import NormalizedChunk, normalize_file
+from groundline.config import Settings
+from groundline.ingestion import NormalizedChunk, normalize_file
 
 
 async def embed_texts(settings: Settings, texts: list[str]) -> list[list[float]]:
